@@ -1,0 +1,31 @@
+{
+  "name": "stash-flow-project",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    
+    "build:backend": "npm run build --workspace backend",
+    "watch:backend": "npm run watch --workspace backend",
+    "dev:backend": "npm run dev --workspace backend",
+    "start:dev:backend":"concurrently \"npm run dev:backend\" \"npm run watch:backend\" ",
+    
+    "dev:frontend": "npm run dev --workspace frontend",
+    
+    "dev": "concurrently \"npm run dev:frontend \" \"npm run start:dev:backend\""
+  },
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "dependencies": {
+    "typescript": "^5.8.3",
+    "@types/node": "^22.15.23"
+
+  }
+}
