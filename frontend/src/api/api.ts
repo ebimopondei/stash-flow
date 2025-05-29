@@ -1,6 +1,6 @@
 import type { LoginResponse, RefreshTokenResponse, SignupResponse } from "@/types/api-response-type";
 import API from "./api-config";
-import type { SignUpFormData } from "@/hooks/form-hooks/use-signup-hook";
+import type { SignUpFormData } from '@shared/validation/signup-schema'
 import type { LoginSchema } from "@/hooks/form-hooks/use-login-hook";
 
 export default function APICalls (){

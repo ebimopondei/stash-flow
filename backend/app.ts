@@ -4,6 +4,7 @@ import path from 'path'
 import chalk from 'chalk'
 import { AssociationError, BaseError, ConnectionError, DatabaseError, ForeignKeyConstraintError, HostNotFoundError, HostNotReachableError, InstanceError, TimeoutError, UniqueConstraintError } from 'sequelize'
 import { CustomError } from './types/error'
+import { APPROUTER } from './routes'
 
 const app = express()
 
@@ -49,9 +50,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   next();
 });
 
-app.get('/', (req: Request, res:Response) =>{
-    res.status(200).json( { message: `server stared now!`});
-})
+app.use('/', APPROUTER)
 
 app.use((error:CustomError, req:Request, res:Response, next:NextFunction) => {
   
