@@ -5,7 +5,7 @@ import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { UserSidebar } from "@/components/layout/UserSidebar";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {  Dialog,DialogContent,DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -121,7 +121,7 @@ const UserGoals = () => {
               <h1 className="text-3xl font-bold">My Goals</h1>
             </div>
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-              <DialogTrigger asChild>
+              <DialogTrigger >
                 <Button>
                   <Plus className="w-4 h-4 mr-2" />
                   Create Goal
@@ -177,7 +177,7 @@ const UserGoals = () => {
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="category">Category *</Label>
-                      <Select value={newGoal.category} onValueChange={(value) => setNewGoal({ ...newGoal, category: value })}>
+                      <Select value={newGoal.category} onValueChange={(value:any) => setNewGoal({ ...newGoal, category: value })}>
                         <SelectTrigger>
                           <SelectValue placeholder="Select category" />
                         </SelectTrigger>
@@ -193,7 +193,7 @@ const UserGoals = () => {
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="frequency">Contribution Frequency</Label>
-                      <Select value={newGoal.contributionFrequency} onValueChange={(value) => setNewGoal({ ...newGoal, contributionFrequency: value })}>
+                      <Select value={newGoal.contributionFrequency} onValueChange={(value:any) => setNewGoal({ ...newGoal, contributionFrequency: value })}>
                         <SelectTrigger>
                           <SelectValue placeholder="Select frequency" />
                         </SelectTrigger>
@@ -253,7 +253,7 @@ const UserGoals = () => {
                             ${goal.current.toLocaleString()} / ${goal.target.toLocaleString()}
                           </span>
                         </div>
-                        <Progress value={progress} className="h-3" />
+                        <Progress value={progress} />
                         <div className="flex justify-between text-xs text-muted-foreground mt-1">
                           <span>{progress.toFixed(1)}% completed</span>
                           <span>${remaining.toLocaleString()} remaining</span>
