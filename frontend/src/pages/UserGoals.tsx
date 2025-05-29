@@ -13,6 +13,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Plus, Target, Calendar, DollarSign, Edit2, Trash2 } from "lucide-react";
 import { toast } from 'sonner'
 
+
 const UserGoals = () => {
   const [goals, setGoals] = useState([
     {
