@@ -11,7 +11,10 @@
     "dev": "nodemon ./dist/app.js",
     "start": "node ./dist/app.js",
     "watch": "tsc --watch",
-    "build": "tsc"
+    "build": "tsc",
+    "migrate": "dotenv -- sequelize-cli db:migrate",
+    "migrate:undo": "dotenv -- sequelize-cli db:migrate:undo",
+    "migrate:skeleton": "dotenv -- sequelize-cli migration:generate --name migration-skeleton"
   },
   "dependencies": {
     "cors": "^2.8.5",
@@ -26,12 +29,14 @@
   "devDependencies": {
     "@types/cors": "^2.8.18",
     "@types/express": "^5.0.2",
-    "@types/node": "^22.15.23",
+    "@types/node": "^22.15.24",
+    "@types/sequelize": "^4.28.20",
     "chalk": "^4.1.2",
     "concurrently": "^9.1.2",
-    "dotenv": "^16.5.0",
+    "dotenv-cli": "^8.0.0",
     "express-async-handler": "^1.2.0",
     "nodemon": "^3.1.10",
-    "ts-node": "^10.9.2"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
   }
 }
