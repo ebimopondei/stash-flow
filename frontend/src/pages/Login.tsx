@@ -1,52 +1,15 @@
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Target } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
-import { toast } from "sonner"
+import { Link } from "react-router-dom";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import useLogin from "@/hooks/form-hooks/use-login-hook";
 
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-
-    // Simulate login logic
-    setTimeout(() => {
-      if (email && password) {
-        // Check if admin credentials
-        if (email === "admin@saveflow.com" && password === "admin123") {
-          localStorage.setItem("userRole", "admin");
-          localStorage.setItem("userEmail", email);
-          toast("Welcome back, Admin!", {
-            description: "Redirecting to admin dashboard...",
-          });
-          navigate("/admin");
-        } else {
-          localStorage.setItem("userRole", "user");
-          localStorage.setItem("userEmail", email);
-          toast("Welcome back!",
-            {
-                description: "Login successful.",
-            });
-          navigate("/dashboard");
-        }
-      } else {
-        toast("Error",
-            {
-            description: "Please fill in all fields."
-        });
-      }
-      setIsLoading(false);
-    }, 1000);
-  };
+  const { form, onLogin } = useLogin()
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex items-center justify-center p-4">
@@ -66,37 +29,51 @@ const Login = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="Enter your email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="Enter your password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
-              </div>
-              <Button
-                type="submit"
-                className="w-full"
-                disabled={isLoading}
-              >
-                {isLoading ? "Signing in..." : "Sign In"}
-              </Button>
-            </form>
+
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onLogin)} className="space-y-4">
+                  <div className="space-y-2">
+                    <FormField
+                      control={form.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Email</FormLabel>
+                          <FormControl>
+                                <Input type="email" placeholder="Enter your email" {...field} />
+                          </FormControl>
+                          <FormDescription />
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <FormField
+                      control={form.control}
+                      name="password"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Password</FormLabel>
+                          <FormControl>
+                                <Input type="password" placeholder="Enter your password" {...field} />
+                          </FormControl>
+                          <FormDescription />
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+
+                <Button className="w-full" type="submit">Sign In</Button>
+
+              </form>
+            </Form>
+
+
+            
+            
             
             <div className="mt-6 text-center space-y-2">
               <Link to="/forgot-password" className="text-sm text-primary hover:underline">

@@ -1,14 +1,25 @@
 import type { LoginResponse, RefreshTokenResponse, SignupResponse } from "@/types/api-response-type";
 import API from "./api-config";
 import type { SignUpFormData } from "@/hooks/form-hooks/use-signup-hook";
+import type { LoginSchema } from "@/hooks/form-hooks/use-login-hook";
 
 export default function APICalls (){
 
     const { api } = API();
 
-    const login= async (email:string, password:string):Promise<LoginResponse> =>{
-        const res = await api.post(`/auth/login`, { email, password } );
-        return res.data;
+    const login= async ({ email, password}: Partial<LoginSchema>):Promise<LoginResponse> =>{
+        try {
+            const res = await api.post(`/auth/login`, { email, password } );
+            return res.data;
+
+
+        }catch(err:any){
+            if (err.response) {
+                return { success: false, message: err.response.data.message, data: { token: "", refreshToken: "", roles: [''] } };
+            } else {
+                return {success: false, message: err.message, data: {token: "", refreshToken: "", roles: ['']}}
+            }
+        }
     }
     
     const newRefreshToken= async ():Promise<RefreshTokenResponse> =>{
