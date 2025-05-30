@@ -31,9 +31,7 @@ const signupController = async ( req: Request, res: Response ) => {
 
 const loginController = async ( req: Request, res: Response ) => {
 
-    const validated = loginSchema.parse(req.body)
-
-    const hashedPassword = await bcrypt.hash(validated.password, 10);
+    const validated = loginSchema.parse(req.body);
 
     const user = await User.findOne( { 
         where: { 
@@ -61,7 +59,6 @@ const loginController = async ( req: Request, res: Response ) => {
         return 
     }
             
-
     const token = jwt.sign(user?.toJSON(), secret, {expiresIn: "1h" });
     const refreshToken = jwt.sign(user?.toJSON(), refreshSecret, { expiresIn: "1d"});
     
