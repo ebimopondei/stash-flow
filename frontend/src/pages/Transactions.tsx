@@ -1,6 +1,6 @@
 import { UserSidebar } from '@/components/layout/UserSidebar';
 import TransactionHistory from '@/components/TransactionHistory';
-import { SidebarProvider } from '@/components/ui/sidebar';
+import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 
 // Mock data (same as in Index.tsx)
 const mockTransactions = [
@@ -40,9 +40,12 @@ const Transactions = () => {
             <UserSidebar />
             <main className='flex-1  p-6 bg-gray-50'>
                 <div className="max-w-7xl">
-                <div className="mb-8">
-                    <h1 className="text-3xl font-bold text-gray-900">Transaction History</h1>
-                    <p className="text-gray-600">View all your transaction history</p>
+                <div className="mb-8 flex items-center space-x-4">
+                    <SidebarTrigger />
+                    <div>
+                      <h1 className="text-3xl font-bold text-gray-900">Transaction History</h1>
+                      <p className="text-gray-600">View all your transaction history</p>
+                    </div>
                 </div>
 
                 <TransactionHistory transactions={mockTransactions} />

@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { SidebarProvider } from '@/components/ui/sidebar';
+import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { UserSidebar } from '@/components/layout/UserSidebar';
 
 const Help = () => {
@@ -19,9 +19,12 @@ const Help = () => {
             <UserSidebar />
             <main className='flex-1  p-6 bg-gray-50'>
                  <div className="max-w-6xl ">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Help & Support</h1>
-          <p className="text-gray-600">Find answers or get in touch with our support team</p>
+        <div className="mb-8 flex items-center space-x-4">
+          <SidebarTrigger />
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">Help & Support</h1>
+            <p className="text-gray-600 text-sm">Find answers or get in touch with our support team</p>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">

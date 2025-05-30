@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { SidebarProvider } from '@/components/ui/sidebar';
+import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { UserSidebar } from '@/components/layout/UserSidebar';
 
 const Profile = () => {
@@ -35,9 +35,12 @@ const Profile = () => {
 
             <main className='flex-1 p-6 by-gray-50'>
                 <div className="max-w-4xl">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Profile</h1>
-          <p className="text-gray-600">Manage your personal information</p>
+        <div className="mb-8 flex items-center space-x-4">
+          <SidebarTrigger />
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">Profile</h1>
+            <p className="text-gray-600">Manage your personal information</p>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
