@@ -9,7 +9,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon ./dist/backend/app.js",
-    "start": "node ./dist/app.js",
+    "start": "node ./dist/backend/app.js",
     "watch": "tsc --watch",
     "build": "tsc",
     "migrate": "dotenv -- sequelize-cli db:migrate",
