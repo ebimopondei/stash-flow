@@ -1,16 +1,12 @@
 import APICalls from "@/api/api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z} from "zod";
+import { loginSchema } from '@shared/validation/signup-schema'
+import type { LoginSchema } from '@shared/validation/signup-schema'
 import useAuth from "../auth-provider";
 import toast from "react-hot-toast";
 
-const loginData = z.object( {
-    email: z.string(),
-    password: z.string().min(6, 'Password must be atleast 6 characters')
-})
 
-export type LoginSchema = z.infer<typeof loginData>
 
 export default function useLogin() {
 
@@ -19,7 +15,7 @@ export default function useLogin() {
     
     
     const form  = useForm<LoginSchema>({ 
-        resolver: zodResolver(loginData),
+        resolver: zodResolver(loginSchema),
         defaultValues: {
             email: '',
             password: ''

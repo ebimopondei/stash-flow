@@ -8,7 +8,7 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon ./dist/app.js",
+    "dev": "nodemon ./dist/backend/app.js",
     "start": "node ./dist/app.js",
     "watch": "tsc --watch",
     "build": "tsc",
@@ -17,6 +17,7 @@
     "migrate:skeleton": "dotenv -- sequelize-cli migration:generate --name migration-skeleton"
   },
   "dependencies": {
+    "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",

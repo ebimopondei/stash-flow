@@ -53,7 +53,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 app.use('/', APPROUTER)
 
 app.use((error:CustomError, req:Request, res:Response, next:NextFunction) => {
-  
+    console.log(error)
     if (error instanceof DatabaseError) {
       const validationMessages = error?.errors.map((e) => e.message).join(', ');
       res.status(400).json({ status: 'fail', statusCode: 503,  message: `Data validation failed: ${validationMessages}` });

@@ -1,11 +1,11 @@
 import express, { Request, Response } from 'express';
+import * as controller from '../../controller/index';
+
 
 const router = express.Router();
 
-router.post('/login', (req: Request, res:Response) =>{
-    res.status(200).json( { message: `server stared now!`});
-});
+router.post('/login', controller.loginController );
 
-router.post('/signup', (req: Request, res:Response) =>{
-    res.status(200).json( { message: `server stared now!`});
-})
+router.post('/signup', controller.signupController);
+
+export const auth = router;
