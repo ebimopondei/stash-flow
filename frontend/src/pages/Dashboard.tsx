@@ -5,8 +5,28 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { UserSidebar } from "@/components/layout/UserSidebar";
 import { Target, TrendingUp, DollarSign, Plus } from "lucide-react";
 import { Link } from "react-router-dom";
+import DashboardApi from "@/api/dashboard";
+import { useEffect } from "react";
+
+
 
 const Dashboard = () => {
+
+  const { getDashboardStats } = DashboardApi()
+
+  
+
+  useEffect(()=>{
+    async function handleGetDashboardStats() {
+      const response = await getDashboardStats();
+
+      console.log(response)
+
+    }
+
+    handleGetDashboardStats();
+
+  }, [])
   const stats = [
     {
       title: "Total Saved",

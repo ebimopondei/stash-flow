@@ -18,6 +18,7 @@ const API = () => {
     
     apiPrivate.interceptors.request.use(
         (config ) => {
+            console.log('token', token)
             if (token) {
                 config.headers['Authorization'] = `Bearer ${token}`;
             }
