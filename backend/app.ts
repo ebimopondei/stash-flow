@@ -116,5 +116,5 @@ app.use((error: CustomError, req: Request, res: Response, next: NextFunction) =>
 
 
 app.listen(PORT, ()=>{
-    console.info(`server started!`)
+    console.info(`server started! ${PORT}`)
 })

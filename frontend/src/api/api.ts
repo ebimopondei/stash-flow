@@ -35,11 +35,11 @@ export default function APICalls (){
         }
     }
 
-    const signUp= async ({ firstname, lastname, email, password}: Partial<SignUpFormData>):Promise<SignupResponse> =>{
+    const signUp= async ({ firstname, lastname, email, password, confirmPassword}: Partial<SignUpFormData>):Promise<SignupResponse> =>{
         try{
             const res = await api.post(`/auth/signup`, {
 
-                firstname, lastname, email, password
+                firstname, lastname, email, password, confirmPassword
              
             }
         );

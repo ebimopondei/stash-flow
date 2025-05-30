@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { UserSidebar } from "@/components/layout/UserSidebar";
-import { Target, TrendingUp, DollarSign, Calendar, Plus } from "lucide-react";
+import { Target, TrendingUp, DollarSign, Plus } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Dashboard = () => {
@@ -20,18 +20,18 @@ const Dashboard = () => {
       change: "+1 this month",
       icon: <Target className="w-4 h-4" />,
     },
-    {
-      title: "Avg. Monthly",
-      value: "$850",
-      change: "+5.2%",
-      icon: <TrendingUp className="w-4 h-4" />,
-    },
-    {
-      title: "Next Goal",
-      value: "45 days",
-      change: "Emergency Fund",
-      icon: <Calendar className="w-4 h-4" />,
-    },
+    // {
+    //   title: "Avg. Monthly",
+    //   value: "$850",
+    //   change: "+5.2%",
+    //   icon: <TrendingUp className="w-4 h-4" />,
+    // },
+    // {
+    //   title: "Next Goal",
+    //   value: "45 days",
+    //   change: "Emergency Fund",
+    //   icon: <Calendar className="w-4 h-4" />,
+    // },
   ];
 
   const goals = [
@@ -75,7 +75,7 @@ const Dashboard = () => {
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center space-x-4">
               <SidebarTrigger />
-              <h1 className="text-3xl font-bold">Dashboard</h1>
+              <h1 className="text-3xl font-bold">Welcome</h1>
             </div>
             <Link to="/dashboard/goals">
               <Button>

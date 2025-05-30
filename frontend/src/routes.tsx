@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Landing from "@/pages/Landing";
 import Login from "@/pages/Login";
 import Signup from "@/pages/Signup";
@@ -9,23 +9,15 @@ import AdminDashboard from "@/pages/AdminDashboard";
 import UserGoals from "@/pages/UserGoals";
 import NotFound from "@/pages/NotFound";
 import { Toaster } from "react-hot-toast";
+import Settings from "./pages/Settings";
+import Profile from "./pages/Profile";
+import Help from "./pages/Help";
+import Transactions from "./pages/Transactions";
 
 const queryClient = new QueryClient();
 
 // Protected Route component
-const ProtectedRoute = ({ children, requiredRole }: { children: React.ReactNode; requiredRole?: string }) => {
-  const userRole = localStorage.getItem("userRole");
-  
-  if (!userRole) {
-    return <Navigate to="/login" replace />;
-  }
-  
-  if (requiredRole && userRole !== requiredRole) {
-    return <Navigate to="/" replace />;
-  }
-  
-  return <>{children}</>;
-};
+
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -40,50 +32,41 @@ const App = () => (
           {/* User Dashboard Routes */}
           <Route 
             path="/dashboard" 
-            element={
-              <ProtectedRoute requiredRole="user">
-                <Dashboard />
-              </ProtectedRoute>
-            } 
+            element={<Dashboard />} 
           />
+
           <Route 
             path="/dashboard/goals" 
             element={
-              <ProtectedRoute requiredRole="user">
                 <UserGoals />
-              </ProtectedRoute>
             } 
           />
           <Route 
             path="/dashboard/transactions" 
             element={
-              <ProtectedRoute requiredRole="user">
-                <Dashboard />
-              </ProtectedRoute>
+                <Transactions />
+
             } 
           />
           <Route 
             path="/dashboard/settings" 
             element={
-              <ProtectedRoute requiredRole="user">
-                <Dashboard />
-              </ProtectedRoute>
+                <Settings />
+
             } 
           />
           <Route 
             path="/dashboard/profile" 
             element={
-              <ProtectedRoute requiredRole="user">
-                <Dashboard />
-              </ProtectedRoute>
+              <Profile />
+
             } 
           />
           <Route 
             path="/dashboard/help" 
             element={
-              <ProtectedRoute requiredRole="user">
-                <Dashboard />
-              </ProtectedRoute>
+                <Help />
+
             } 
           />
           
@@ -91,9 +74,8 @@ const App = () => (
           <Route 
             path="/admin" 
             element={
-              <ProtectedRoute requiredRole="admin">
                 <AdminDashboard />
-              </ProtectedRoute>
+
             } 
           />
           
