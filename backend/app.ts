@@ -6,6 +6,8 @@ import { AssociationError, BaseError, ConnectionError, DatabaseError, ForeignKey
 import { CustomError } from './types/error'
 import { APPROUTER } from './routes'
 
+import { PORT } from './config/server'
+
 const app = express()
 
 app.use(express.urlencoded( { extended: true, }))
@@ -113,6 +115,6 @@ app.use((error: CustomError, req: Request, res: Response, next: NextFunction) =>
 })
 
 
-app.listen(3001, ()=>{
+app.listen(PORT, ()=>{
     console.info(`server started!`)
 })
