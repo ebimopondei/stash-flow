@@ -5,7 +5,7 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { UserSidebar } from "@/components/layout/UserSidebar";
 import { Target, TrendingUp, DollarSign, Plus } from "lucide-react";
 import { Link } from "react-router-dom";
-import DashboardApi from "@/api/dashboard";
+import DashboardApi from "@/api/dashboard/dashboard-api";
 import { useEffect } from "react";
 
 

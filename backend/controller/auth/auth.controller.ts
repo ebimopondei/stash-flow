@@ -66,7 +66,32 @@ const loginController = async ( req: Request, res: Response ) => {
 
 }
 
+const refreshTokenController = async (req:Request, res:Response) =>{
+    const refreshToken = req.body.refreshToken;
+    if(!refreshToken){
+        res.status(401).json({ message: 'unathorized access'})
+        return;
+    }
+
+    jwt.verify( refreshToken, refreshSecret, ( err:Error, data:any ) => {
+        
+            if( err ) return res.status( 401 ).json( { success: true, message: err.message, data: [] });
+
+            delete data.iat
+            delete data.exp
+
+            const token = jwt.sign(data, secret, {expiresIn: "1h" });
+            const refreshToken = jwt.sign(data, refreshSecret, {expiresIn: "1d" });
+            
+            
+            res.json({ token, refreshToken })
+        })
+
+
+}
+
 export { 
     signupController,
-    loginController
+    loginController,
+    refreshTokenController
 }

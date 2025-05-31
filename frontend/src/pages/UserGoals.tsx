@@ -7,14 +7,18 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { UserSidebar } from "@/components/layout/UserSidebar";
 import {  Dialog,DialogContent,DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Plus, Target, Calendar, DollarSign, Edit2, Trash2 } from "lucide-react";
 import { toast } from 'sonner'
+import useCreateGoal from "@/hooks/form-hooks/use-create-goal-hook";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 
 
 const UserGoals = () => {
+
+  const { form, onCreateGoal, isDialogOpen, setIsDialogOpen } = useCreateGoal();
+
   const [goals, setGoals] = useState([
     {
       id: 1,
@@ -51,53 +55,8 @@ const UserGoals = () => {
     },
   ]);
 
-  const [newGoal, setNewGoal] = useState({
-    title: "",
-    description: "",
-    target: "",
-    deadline: "",
-    category: "",
-    contributionFrequency: "",
-  });
 
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const handleCreateGoal = () => {
-    if (!newGoal.title || !newGoal.target || !newGoal.deadline || !newGoal.category) {
-      toast("Error",
-        {
-        description: "Please fill in all required fields.",
-      });
-      return;
-    }
-
-    const goal = {
-      id: goals.length + 1,
-      title: newGoal.title,
-      description: newGoal.description,
-      target: parseFloat(newGoal.target),
-      current: 0,
-      deadline: newGoal.deadline,
-      category: newGoal.category,
-      status: "Active",
-      contributionFrequency: newGoal.contributionFrequency,
-    };
-
-    setGoals([...goals, goal]);
-    setNewGoal({
-      title: "",
-      description: "",
-      target: "",
-      deadline: "",
-      category: "",
-      contributionFrequency: "",
-    });
-    setIsDialogOpen(false);
-    toast("Goal Created!",
-      {
-      description: `${goal.title} has been added to your goals.`,
-    });
-  };
 
   const handleDeposit = (goalId: number, amount: number) => {
     setGoals(goals.map(goal => 
@@ -135,81 +94,139 @@ const UserGoals = () => {
                     Set up a new goal to start your savings journey.
                   </DialogDescription>
                 </DialogHeader>
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="title">Goal Title *</Label>
-                    <Input
-                      id="title"
-                      placeholder="e.g., Emergency Fund"
-                      value={newGoal.title}
-                      onChange={(e) => setNewGoal({ ...newGoal, title: e.target.value })}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="description">Description</Label>
-                    <Textarea
-                      id="description"
-                      placeholder="Describe your goal..."
-                      value={newGoal.description}
-                      onChange={(e) => setNewGoal({ ...newGoal, description: e.target.value })}
-                    />
-                  </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="target">Target Amount *</Label>
-                      <Input
-                        id="target"
-                        type="number"
-                        placeholder="10000"
-                        value={newGoal.target}
-                        onChange={(e) => setNewGoal({ ...newGoal, target: e.target.value })}
-                      />
+
+                <Form {...form}>
+                  <form className="" onSubmit={form.handleSubmit(onCreateGoal)}>
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <FormField 
+                          control={form.control}
+                          name="title"
+                          render={({field}) =>(
+                            <FormItem>
+                              <FormLabel>Goal Title *</FormLabel>
+                              <FormControl>
+                                <Input placeholder="e.g., Emergency Fund" {...field} />
+                              </FormControl>
+                              <FormDescription />
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <FormField 
+                          control={form.control}
+                          name="description"
+                          render={({field}) =>(
+                            <FormItem>
+                              <FormLabel>Description</FormLabel>
+                              <FormControl>
+                                <Textarea placeholder="Describe your goal..." {...field} />
+                              </FormControl>
+                              <FormDescription />
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                      </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <FormField 
+                            control={form.control}
+                            name="targetAmount"
+                            render={({field}) =>(
+                              <FormItem>
+                                <FormLabel>Target Amount*</FormLabel>
+                                <FormControl>
+                                  <Input placeholder="10000" {...field}/>
+                                </FormControl>
+                                <FormDescription />
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />  
+                        </div>
+
+                        <div className="space-y-2">
+                          <FormField 
+                            control={form.control}
+                            name="deadline"
+                            render={({field}) =>(
+                              <FormItem>
+                                <FormLabel>Deadline *</FormLabel>
+                                <FormControl>
+                                  <Input type="date"  {...field} />
+                                </FormControl>
+                                <FormDescription />
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <FormField 
+                            control={form.control}
+                            name="category"
+                            render={({field}) =>(
+                              <FormItem>
+                                <FormLabel>Category *</FormLabel>
+                                <FormControl>
+                                  <Select onValueChange={field.onChange} value={field.value} >
+                                    <SelectTrigger>
+                                      <SelectValue placeholder="Select category" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                      <SelectItem value="Emergency">Emergency</SelectItem>
+                                      <SelectItem value="Travel">Travel</SelectItem>
+                                      <SelectItem value="Transportation">Transportation</SelectItem>
+                                      <SelectItem value="Education">Education</SelectItem>
+                                      <SelectItem value="Health">Health</SelectItem>
+                                      <SelectItem value="Other">Other</SelectItem>
+                                    </SelectContent>
+                                  </Select>
+                                </FormControl>
+                                <FormDescription />
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <FormField 
+                            control={form.control}
+                            name="frequency"
+                            render={({field}) =>(
+                              <FormItem>
+                                <FormLabel>Select Frequency *</FormLabel>
+                                <FormControl>
+                                  <Select onValueChange={field.onChange} value={field.value}>
+                                    <SelectTrigger>
+                                      <SelectValue placeholder="Select frequency" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                      <SelectItem value="Weekly">Weekly</SelectItem>
+                                      <SelectItem value="Monthly">Monthly</SelectItem>
+                                      <SelectItem value="Quarterly">Quarterly</SelectItem>
+                                    </SelectContent>
+                                  </Select>
+                                </FormControl>
+                                <FormDescription />
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                      </div>
+                      <Button type="submit" className="w-full">
+                        Create Goal
+                      </Button>
                     </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="deadline">Deadline *</Label>
-                      <Input
-                        id="deadline"
-                        type="date"
-                        value={newGoal.deadline}
-                        onChange={(e) => setNewGoal({ ...newGoal, deadline: e.target.value })}
-                      />
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="category">Category *</Label>
-                      <Select value={newGoal.category} onValueChange={(value:any) => setNewGoal({ ...newGoal, category: value })}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select category" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="Emergency">Emergency</SelectItem>
-                          <SelectItem value="Travel">Travel</SelectItem>
-                          <SelectItem value="Transportation">Transportation</SelectItem>
-                          <SelectItem value="Education">Education</SelectItem>
-                          <SelectItem value="Health">Health</SelectItem>
-                          <SelectItem value="Other">Other</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="frequency">Contribution Frequency</Label>
-                      <Select value={newGoal.contributionFrequency} onValueChange={(value:any) => setNewGoal({ ...newGoal, contributionFrequency: value })}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select frequency" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="Weekly">Weekly</SelectItem>
-                          <SelectItem value="Monthly">Monthly</SelectItem>
-                          <SelectItem value="Quarterly">Quarterly</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-                  <Button onClick={handleCreateGoal} className="w-full">
-                    Create Goal
-                  </Button>
-                </div>
+                  </form>
+                </Form>
               </DialogContent>
             </Dialog>
           </div>

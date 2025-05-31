@@ -93,6 +93,9 @@ export function AuthProvider({children}: Props){
         setIsLoading(false)
     },[])
 
+    //return early if auth provider not fully loaded.
+    if(isLoading) return; 
+
     return(
         <AuthContext.Provider value={{ isLoggedIn, isLoading, setIsLoggedIn, loginAuth, logoutAuth, token, setToken, refreshToken, setRefreshToken}}>
             {children}

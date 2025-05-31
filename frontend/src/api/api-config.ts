@@ -12,13 +12,12 @@ const API = () => {
     // const backendHost = "http://192.168.0.102:3001";
     // const backendHost = "https://link-sharing-app-server-4tmo.onrender.com"
 
-    const { setToken, token, logoutAuth } = useAuth();
+    const { setToken, token, refreshToken, logoutAuth } = useAuth();
     const api = axios.create({ baseURL: backendHost });
     const apiPrivate = axios.create({ baseURL: backendHost, withCredentials: true });
     
     apiPrivate.interceptors.request.use(
         (config ) => {
-            console.log('token', token)
             if (token) {
                 config.headers['Authorization'] = `Bearer ${token}`;
             }
@@ -38,7 +37,7 @@ const API = () => {
               
             if (error?.response?.status === 403 && !prevRequest?.sent) {
                 prevRequest.sent = true;
-                const res = await apiPrivate.get(`/auth/refresh`);
+                const res = await api.post(`/auth/refresh`, { refreshToken });
                 setToken( res.data.token );
                 const newToken = res.data.token;
                 prevRequest.headers['Authorization'] = `Bearer ${newToken}`;

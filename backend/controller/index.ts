@@ -1,1 +1,2 @@
-export { signupController, loginController } from "./auth/auth.controller";
+export { signupController, loginController, refreshTokenController } from "./auth/auth.controller";
+export { getGoalsController, createGoalsController } from "./user/user.controller";

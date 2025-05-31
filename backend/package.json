@@ -18,6 +18,7 @@
     "migrate:skeleton": "dotenv -- sequelize-cli migration:generate --name migration-skeleton"
   },
   "dependencies": {
+    "@types/jsonwebtoken": "^9.0.9",
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
     "express": "^5.1.0",
