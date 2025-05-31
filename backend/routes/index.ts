@@ -16,7 +16,6 @@ router.use('/user', verifyJwt, user)
 
 router.use('/public', (req: Request, res: Response)=> {
     res.status(200).json( { message: `This is the public route!`});
-    
 })
 
 

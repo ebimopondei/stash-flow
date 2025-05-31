@@ -43,6 +43,7 @@ const API = () => {
                 prevRequest.headers['Authorization'] = `Bearer ${newToken}`;
                 return apiPrivate(prevRequest);
             }
+            
             return error.response.data;
         }
     );

@@ -15,9 +15,9 @@ export default function APICalls (){
 
         }catch(err:any){
             if (err.response) {
-                return { success: false, message: err.response.data.message, data: { token: "", refreshToken: "", roles: [''] } };
+                return { success: false, message: err.response.data.message, data: { token: "", refreshToken: "", user: null } };
             } else {
-                return {success: false, message: err.message, data: {token: "", refreshToken: "", roles: ['']}}
+                return {success: false, message: err.message, data: {token: "", refreshToken: "", user: null}}
             }
         }
     }
@@ -28,9 +28,9 @@ export default function APICalls (){
             return res.data;
         }catch(err:any){
             if (err.response) {
-                return { success: false, message: err.response.data.message, data: { token: "", refreshToken: "", roles: [''] } };
+                return { success: false, message: err.response.data.message, data: { token: "", refreshToken: "", user: null } };
             } else {
-                return {success: false, message: err.message, data: {token: "", refreshToken: "", roles: ['']}}
+                return {success: false, message: err.message, data: {token: "", refreshToken: "", user : null}}
             }
         }
     }
@@ -47,9 +47,9 @@ export default function APICalls (){
             return data;
         }catch(err:any){
             if (err.response) {
-                return { success: false, message: err.response.data.message, data: { token: "", refreshToken: "", roles: [''] } };
+                return { success: false, message: err.response.data.message, data: { token: "", refreshToken: "", user: null } };
             } else {
-                return {success: false, message: err.message, data: {token: "", refreshToken: "", roles: ['']}}
+                return {success: false, message: err.message, data: {token: "", refreshToken: "", user: null}}
             }
         }
     }

@@ -1,6 +1,9 @@
+import type { User } from "./user"
+
 export type loginProps = {
     token: string,
-    refreshToken: string
+    refreshToken: string,
+    user: User | null
 }
 
 export type AuthResponse = {
@@ -9,7 +12,7 @@ export type AuthResponse = {
     data: { 
         token: string,
         refreshToken: string, 
-        roles: string[],
+        user: User | null
     }
 }
 

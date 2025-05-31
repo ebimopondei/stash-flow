@@ -62,7 +62,7 @@ const loginController = async ( req: Request, res: Response ) => {
     const token = jwt.sign(user?.toJSON(), secret, {expiresIn: "1h" });
     const refreshToken = jwt.sign(user?.toJSON(), refreshSecret, { expiresIn: "1d"});
     
-    res.json({success: true, data: { token, refreshToken }, message: "Login Successfully!"});
+    res.json({success: true, data: { token, refreshToken, user }, message: "Login Successfully!"});
 
 }
 
@@ -83,15 +83,26 @@ const refreshTokenController = async (req:Request, res:Response) =>{
             const token = jwt.sign(data, secret, {expiresIn: "1h" });
             const refreshToken = jwt.sign(data, refreshSecret, {expiresIn: "1d" });
             
-            
             res.json({ token, refreshToken })
         })
 
 
 }
 
+const authCheck = async (req: Request, res: Response) => {
+    const token = req.body.token;
+
+    if(token){
+        res.status(201).json({ isAuthenticated: true })
+    }else {
+        res.status(401).json( { isAuthenticated: false } )
+    }
+
+}
+
 export { 
     signupController,
     loginController,
-    refreshTokenController
+    refreshTokenController,
+    authCheck
 }

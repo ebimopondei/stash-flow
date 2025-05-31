@@ -1,2 +1,3 @@
-export { signupController, loginController, refreshTokenController } from "./auth/auth.controller";
-export { getGoalsController, getActiveGoalsController, createGoalsController } from "./user/user.controller";
+export * as User from './user'
+export * as Auth from './auth'
+export * as Admin from './admin'

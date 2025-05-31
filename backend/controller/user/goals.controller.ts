@@ -4,19 +4,8 @@ import { createGoalSchema } from '../../../shared/validation/signup-schema'
 
 import SavingsGoal from "../../database/models/Savingsgoal";
 
-const jwt = require('jsonwebtoken')
 
 const getGoalsController = async ( req: Request, res: Response ) => {
-    // @ts-expect-error
-    const user = req.parsedToken
-    
-    const userGoals = await SavingsGoal.findAll( { where: { userId: user.id }})
-
-    res.json({success: true, data: userGoals, message: "User Created Successfully!"});
-    
-}
-
-const getDashboardStats = async ( req: Request, res: Response ) => {
     // @ts-expect-error
     const user = req.parsedToken
     
@@ -62,6 +51,5 @@ const createGoalsController = async ( req: Request, res: Response ) => {
 export { 
     getGoalsController,
     getActiveGoalsController,
-    createGoalsController,
-    getDashboardStats,
+    createGoalsController
 }
