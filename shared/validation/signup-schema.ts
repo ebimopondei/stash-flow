@@ -16,10 +16,11 @@ export type SignUpFormData = z.infer<typeof signupSchema>;
 
 
 export const createGoalSchema = z.object({
+  id: z.string().optional(),
   title: z.string().min(3, 'Title too short!'),
   description: z.string(),
   targetAmount: z.string(),
-  savedAmount: z.number().optional(),
+  savedAmount: z.string().optional(),
   deadline: z.string(),
   category: z.string(),
   frequency: z.string(),

@@ -9,6 +9,8 @@ import { sequelize } from "../setup";
       id?: number;
       userId: string;
       title: string;
+      description: string;
+      category: string;
       targetAmount: string;
       savedAmount: string;
       deadline: Date;
@@ -25,6 +27,8 @@ import { sequelize } from "../setup";
       public id!: number;
       public userId!: string;
       public title!: string;
+      public description!: string;
+      public category!: string;
       public targetAmount!: string;
       public savedAmount!: string;
       public deadline!: Date;
@@ -58,6 +62,16 @@ import { sequelize } from "../setup";
       },
 
       title: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+
+      description: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+
+      category: {
         type: DataTypes.STRING,
         allowNull: false,
       },

@@ -16,7 +16,9 @@ export default function useCreateGoal(){
     const form = useForm<CreateGoalFormData>({
         resolver: zodResolver(createGoalSchema),
         defaultValues: {
-            title: ''
+            title: '',
+            targetAmount: '0',
+            savedAmount: '0'
 
         }
     })

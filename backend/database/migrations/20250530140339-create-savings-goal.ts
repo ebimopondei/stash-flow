@@ -28,6 +28,16 @@ module.exports = {
         allowNull: false,
       },
 
+      description: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+
+      category: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+
       targetAmount: {
         type: Sequelize.DOUBLE,
         defaultValue: 0,

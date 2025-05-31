@@ -34,6 +34,8 @@ const createGoalsController = async ( req: Request, res: Response ) => {
 
     const goal = await SavingsGoal.create( {
         title: validated.title,
+        description: validated.description,
+        category: validated.category,
         deadline: new Date(validated.deadline),
         isLocked: false,
         savedAmount: '0',

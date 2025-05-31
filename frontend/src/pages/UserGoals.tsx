@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -13,55 +13,37 @@ import { Plus, Target, Calendar, DollarSign, Edit2, Trash2 } from "lucide-react"
 import { toast } from 'sonner'
 import useCreateGoal from "@/hooks/form-hooks/use-create-goal-hook";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import GoalsApi from "@/api/goals/goals-api";
+import { type CreateGoalFormData } from '@shared/validation/signup-schema'
 
 
 const UserGoals = () => {
 
   const { form, onCreateGoal, isDialogOpen, setIsDialogOpen } = useCreateGoal();
 
-  const [goals, setGoals] = useState([
-    {
-      id: 1,
-      title: "Emergency Fund",
-      description: "6 months of living expenses",
-      target: 10000,
-      current: 6500,
-      deadline: "2024-08-15",
-      category: "Emergency",
-      status: "Active",
-      contributionFrequency: "Monthly",
-    },
-    {
-      id: 2,
-      title: "Vacation to Japan",
-      description: "Dream trip to Tokyo and Kyoto",
-      target: 5000,
-      current: 2800,
-      deadline: "2024-12-01",
-      category: "Travel",
-      status: "Active",
-      contributionFrequency: "Weekly",
-    },
-    {
-      id: 3,
-      title: "New Car",
-      description: "Down payment for electric vehicle",
-      target: 25000,
-      current: 3150,
-      deadline: "2025-06-01",
-      category: "Transportation",
-      status: "Active",
-      contributionFrequency: "Monthly",
-    },
-  ]);
+  const { getGoals } = GoalsApi()
+
+  const [goals, setGoals] = useState<CreateGoalFormData[]>([]);
+
+  useEffect(()=>{
+
+    async function handleGetGoals(){
+      const response = await getGoals();
+      setGoals(response.data)
+      console.log(response.data)
+    } 
+
+    handleGetGoals();
+
+  }, [])
 
 
 
 
-  const handleDeposit = (goalId: number, amount: number) => {
+  const handleDeposit = (goalId: string, amount: number) => {
     setGoals(goals.map(goal => 
       goal.id === goalId 
-        ? { ...goal, current: goal.current + amount }
+        ? { ...goal, savedAmount: String(Number(goal.savedAmount) + amount) }
         : goal
     ));
     toast("Deposit Successful",
@@ -234,8 +216,8 @@ const UserGoals = () => {
           {/* Goals Grid */}
           <div className="grid gap-6">
             {goals.map((goal) => {
-              const progress = (goal.current / goal.target) * 100;
-              const remaining = goal.target - goal.current;
+              const progress = (Number(goal.savedAmount) / Number(goal.targetAmount)) * 100;
+              const remaining = Number(goal.targetAmount) - Number(goal.savedAmount);
               const daysRemaining = Math.ceil(
                 (new Date(goal.deadline).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)
               );
@@ -255,7 +237,7 @@ const UserGoals = () => {
                       </div>
                       <div className="flex items-center space-x-2">
                         <Badge>{goal.category}</Badge>
-                        <Badge variant={goal.status === "Active" ? "default" : "secondary"}>
+                        <Badge variant={goal.status === "active" ? "default" : "secondary"}>
                           {goal.status}
                         </Badge>
                       </div>
@@ -268,7 +250,7 @@ const UserGoals = () => {
                         <div className="flex justify-between items-center mb-2">
                           <span className="text-sm font-medium">Progress</span>
                           <span className="text-sm text-muted-foreground">
-                            ${goal.current.toLocaleString()} / ${goal.target.toLocaleString()}
+                            ${Number(goal.savedAmount).toLocaleString()} / ${goal.targetAmount.toLocaleString()}
                           </span>
                         </div>
                         <Progress value={progress} />
@@ -288,7 +270,7 @@ const UserGoals = () => {
                         </div>
                         <div className="flex items-center space-x-2">
                           <DollarSign className="w-4 h-4 text-muted-foreground" />
-                          <span>{goal.contributionFrequency} contributions</span>
+                          <span>{goal.frequency} contributions</span>
                         </div>
                       </div>
 
@@ -296,7 +278,7 @@ const UserGoals = () => {
                       <div className="flex space-x-2 pt-2">
                         <Button
                           size="sm"
-                          onClick={() => handleDeposit(goal.id, 100)}
+                          onClick={() => handleDeposit(String(goal.id), 100)}
                           className="flex-1"
                         >
                           <DollarSign className="w-4 h-4 mr-2" />

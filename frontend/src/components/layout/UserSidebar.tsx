@@ -14,7 +14,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Target, Home, TrendingUp, Settings, User, HelpCircle, LogOut } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
+import { toast } from "react-hot-toast";
+import useAuth from "@/hooks/auth-provider";
 
 const menuItems = [
   {
@@ -52,18 +53,18 @@ const menuItems = [
 export function UserSidebar() {
   const location = useLocation();
   const navigate = useNavigate();
+  const { logoutAuth } = useAuth()
   const userEmail = localStorage.getItem("userEmail") || "user@example.com";
   const userInitials = userEmail.split("@")[0].slice(0, 2).toUpperCase();
 
   const handleLogout = () => {
-    localStorage.removeItem("userRole");
-    localStorage.removeItem("userEmail");
-    toast(
-      "Logged out",
-      {
-      description: "You have been successfully logged out.",
-    });
-    navigate("/");
+    logoutAuth();
+    toast.success('Logging out ')
+    setTimeout(()=>{
+
+      navigate('/login')
+
+    }, 3000)
   };
 
   return (
