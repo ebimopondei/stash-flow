@@ -8,4 +8,6 @@ router.post('/goals', controller.createGoalsController );
 
 router.get('/goals', controller.getGoalsController);
 
+router.get('/goals/active', controller.getActiveGoalsController);
+
 export const user = router;

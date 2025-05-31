@@ -6,13 +6,18 @@ import { UserSidebar } from "@/components/layout/UserSidebar";
 import { Target, TrendingUp, DollarSign, Plus } from "lucide-react";
 import { Link } from "react-router-dom";
 import DashboardApi from "@/api/dashboard/dashboard-api";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import GoalsApi from "@/api/goals/goals-api";
+import { type CreateGoalFormData } from "@shared/validation/signup-schema";
 
 
 
 const Dashboard = () => {
 
   const { getDashboardStats } = DashboardApi()
+  const { getActiveGoals } = GoalsApi()
+
+  const [ goals, setGoals ]  = useState<CreateGoalFormData[]>([]) 
 
   
 
@@ -24,6 +29,16 @@ const Dashboard = () => {
 
     }
 
+    async function handleGetGoals() {
+      const response = await getActiveGoals();
+      setGoals(response.data)
+      
+    }
+
+
+
+
+    handleGetGoals();
     handleGetDashboardStats();
 
   }, [])
@@ -54,32 +69,7 @@ const Dashboard = () => {
     // },
   ];
 
-  const goals = [
-    {
-      id: 1,
-      title: "Emergency Fund",
-      target: 10000,
-      current: 6500,
-      deadline: "2024-08-15",
-      category: "Emergency",
-    },
-    {
-      id: 2,
-      title: "Vacation to Japan",
-      target: 5000,
-      current: 2800,
-      deadline: "2024-12-01",
-      category: "Travel",
-    },
-    {
-      id: 3,
-      title: "New Car",
-      target: 25000,
-      current: 3150,
-      deadline: "2025-06-01",
-      category: "Transportation",
-    },
-  ];
+  
 
   const recentTransactions = [
     { id: 1, description: "Monthly deposit - Emergency Fund", amount: 500, date: "2024-01-15", type: "deposit" },
@@ -130,13 +120,13 @@ const Dashboard = () => {
               </CardHeader>
               <CardContent className="space-y-4">
                 {goals.map((goal) => {
-                  const progress = (goal.current / goal.target) * 100;
+                  const progress = (Number(goal.savedAmount) / Number(goal.targetAmount)) * 100;
                   return (
                     <div key={goal.id} className="space-y-2">
                       <div className="flex justify-between items-center">
                         <h4 className="font-semibold">{goal.title}</h4>
                         <span className="text-sm text-muted-foreground">
-                          ${goal.current.toLocaleString()} / ${goal.target.toLocaleString()}
+                          ${String(goal.savedAmount).toLocaleString()} / ${goal.targetAmount.toLocaleString()}
                         </span>
                       </div>
                       <Progress value={progress} className="h-2" />

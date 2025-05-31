@@ -25,6 +25,18 @@ const getGoalsController = async ( req: Request, res: Response ) => {
     
 }
 
+const getActiveGoalsController = async ( req: Request, res: Response ) => {
+    // @ts-expect-error
+    const user = req.parsedToken
+    
+
+
+     const userGoals = await SavingsGoal.findAll( { where: { userId: user.id, status: 'active' }})
+
+    res.json({success: true, data: userGoals, message: "User Created Successfully!"});
+    
+}
+
 const createGoalsController = async ( req: Request, res: Response ) => {
 
     // @ts-expect-error
@@ -50,5 +62,6 @@ const createGoalsController = async ( req: Request, res: Response ) => {
 
 export { 
     getGoalsController,
+    getActiveGoalsController,
     createGoalsController
 }

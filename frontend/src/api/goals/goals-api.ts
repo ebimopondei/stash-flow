@@ -18,6 +18,19 @@ export default function GoalsApi (){
             }
         }
     }
+    const getActiveGoals= async () =>{
+        try {
+            const res = await apiPrivate.get(`/user/goals/active`);
+            return res.data;
+
+        }catch(err:any){
+            if (err.response) {
+                return { success: false, message: err.response.data.message, data: { token: "", refreshToken: "", roles: [''] } };
+            } else {
+                return {success: false, message: err.message, data: {token: "", refreshToken: "", roles: ['']}}
+            }
+        }
+    }
 
     const createGoals= async ({ category, deadline, description, frequency, targetAmount, title}: Partial<CreateGoalFormData>) =>{
             try {
@@ -34,7 +47,7 @@ export default function GoalsApi (){
             }
         }
     
-    return  { getGoals, createGoals }
+    return  { getGoals, getActiveGoals, createGoals }
 
 }
 
