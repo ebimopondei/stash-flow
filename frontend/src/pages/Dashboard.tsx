@@ -7,70 +7,29 @@ import { Target, TrendingUp, DollarSign, Plus } from "lucide-react";
 import { Link } from "react-router-dom";
 import DashboardApi from "@/api/dashboard/dashboard-api";
 import { useEffect, useState } from "react";
-import GoalsApi from "@/api/goals/goals-api";
-import { type CreateGoalFormData } from "@shared/validation/signup-schema";
+import type { Statistics } from "@/types/dashboard";
 
 
 
 const Dashboard = () => {
 
   const { getDashboardStats } = DashboardApi()
-  const { getActiveGoals } = GoalsApi()
 
-  const [ goals, setGoals ]  = useState<CreateGoalFormData[]>([]) 
+  const [ stats, setStats ] = useState<Statistics| null>(null);
+
 
   
 
   useEffect(()=>{
     async function handleGetDashboardStats() {
       const response = await getDashboardStats();
-
-      console.log(response)
-
+      setStats(response.data)
     }
 
-    async function handleGetGoals() {
-      const response = await getActiveGoals();
-      setGoals(response.data)
-      
-    }
-
-
-
-
-    handleGetGoals();
     handleGetDashboardStats();
 
-  }, [])
-  const stats = [
-    {
-      title: "Total Saved",
-      value: "$12,450",
-      change: "+12.5%",
-      icon: <DollarSign className="w-4 h-4" />,
-    },
-    {
-      title: "Active Goals",
-      value: "3",
-      change: "+1 this month",
-      icon: <Target className="w-4 h-4" />,
-    },
-    // {
-    //   title: "Avg. Monthly",
-    //   value: "$850",
-    //   change: "+5.2%",
-    //   icon: <TrendingUp className="w-4 h-4" />,
-    // },
-    // {
-    //   title: "Next Goal",
-    //   value: "45 days",
-    //   change: "Emergency Fund",
-    //   icon: <Calendar className="w-4 h-4" />,
-    // },
-  ];
-
+  }, []);
   
-
   const recentTransactions = [
     { id: 1, description: "Monthly deposit - Emergency Fund", amount: 500, date: "2024-01-15", type: "deposit" },
     { id: 2, description: "Weekly deposit - Vacation", amount: 100, date: "2024-01-12", type: "deposit" },
@@ -97,18 +56,51 @@ const Dashboard = () => {
 
           {/* Stats Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            {stats.map((stat, index) => (
-              <Card key={index}>
+              <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
-                  {stat.icon}
+                  <CardTitle className="text-sm font-medium">Main Wallet</CardTitle>
+                  {<DollarSign className="w-4 h-4" />}
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">{stat.value}</div>
-                  <p className="text-xs text-muted-foreground">{stat.change}</p>
+                  <div className="text-2xl font-bold">${stats?.wallets.main}</div>
+                  <p className="text-xs text-muted-foreground">+16%</p>
                 </CardContent>
               </Card>
-            ))}
+
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Sub Wallet</CardTitle>
+                  {<DollarSign className="w-4 h-4" />}
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">${stats?.wallets.sub}</div>
+                  <p className="text-xs text-muted-foreground">+3%</p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Total Saved</CardTitle>
+                  {<DollarSign className="w-4 h-4" />}
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">${stats?.totalSaved}</div>
+                  <p className="text-xs text-muted-foreground">+10%</p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Active Goals</CardTitle>
+                  {<Target className="w-4 h-4" />}
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">{stats?.activeGoals}</div>
+                  <p className="text-xs text-muted-foreground">+0</p>
+                </CardContent>
+              </Card>
+            {/* {stats.map((stat, index) => (
+            ))} */}
           </div>
 
           {/* Goals Overview */}
@@ -119,7 +111,7 @@ const Dashboard = () => {
                 <CardDescription>Your current savings progress</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                {goals.map((goal) => {
+                {stats?.goals.map((goal) => {
                   const progress = (Number(goal.savedAmount) / Number(goal.targetAmount)) * 100;
                   return (
                     <div key={goal.id} className="space-y-2">

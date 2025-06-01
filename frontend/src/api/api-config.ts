@@ -41,7 +41,7 @@ const API = () => {
                 setToken( res.data.token );
                 const newToken = res.data.token;
                 prevRequest.headers['Authorization'] = `Bearer ${newToken}`;
-                return apiPrivate(prevRequest);
+                return api(prevRequest);
             }
             
             return error.response.data;

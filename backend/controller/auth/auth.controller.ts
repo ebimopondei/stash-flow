@@ -9,6 +9,7 @@ import { SECRET as secret, REFRESHSECRET as refreshSecret } from '../../config/s
 
 import bcrypt from 'bcryptjs'
 import { Op } from "sequelize";
+import Wallets from "../../database/models/Wallets";
 
 const jwt = require('jsonwebtoken')
 
@@ -51,6 +52,9 @@ const loginController = async ( req: Request, res: Response ) => {
         res.status(400).json({ success: false, message: 'Invalid Credentials' });
         return 
     }
+
+    //to be removed later
+    await Wallets.findOrCreate( { where: { userId: user.id }} )
 
     const isMatch = await bcrypt.compare(validated.password, user.password);
 

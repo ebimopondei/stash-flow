@@ -215,7 +215,7 @@ const UserGoals = () => {
 
           {/* Goals Grid */}
           <div className="grid gap-6">
-            {goals.map((goal) => {
+            {goals?.map((goal) => {
               const progress = (Number(goal.savedAmount) / Number(goal.targetAmount)) * 100;
               const remaining = Number(goal.targetAmount) - Number(goal.savedAmount);
               const daysRemaining = Math.ceil(
@@ -299,7 +299,7 @@ const UserGoals = () => {
             })}
           </div>
 
-          {goals.length === 0 && (
+          {goals?.length === 0 && (
             <Card className="text-center py-12">
               <CardContent>
                 <Target className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
