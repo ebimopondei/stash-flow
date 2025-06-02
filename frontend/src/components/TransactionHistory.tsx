@@ -1,28 +1,19 @@
 import { ArrowDownCircle, ArrowUpCircle, AlertTriangle, Calendar } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-
-interface Transaction {
-  id: string;
-  goalId: string;
-  goalName: string;
-  type: 'Deposit' | 'Disbursement' | 'Early Unlock Penalty';
-  amount: number;
-  description: string;
-  date: string;
-}
+import type { TransactionsAttribute } from '@/types/transactions';
 
 interface TransactionHistoryProps {
-  transactions: Transaction[];
+  transactions: TransactionsAttribute[];
 }
 
 const TransactionHistory = ({ transactions }: TransactionHistoryProps) => {
   const getTransactionIcon = (type: string) => {
     switch (type) {
-      case 'Deposit':
-        return <ArrowUpCircle className="w-5 h-5 text-green-500" />;
-      case 'Disbursement':
-        return <ArrowDownCircle className="w-5 h-5 text-blue-500" />;
-      case 'Early Unlock Penalty':
+      case 'deposit':
+        return <ArrowDownCircle className="w-5 h-5 text-green-500" />;
+      case 'disbursement':
+        return <ArrowUpCircle className="w-5 h-5 text-blue-500" />;
+      case 'penalty':
         return <AlertTriangle className="w-5 h-5 text-orange-500" />;
       default:
         return <Calendar className="w-5 h-5 text-gray-500" />;
@@ -31,11 +22,11 @@ const TransactionHistory = ({ transactions }: TransactionHistoryProps) => {
 
   const getTransactionColor = (type: string) => {
     switch (type) {
-      case 'Deposit':
+      case 'deposit':
         return 'text-green-600';
-      case 'Disbursement':
+      case 'disbursement':
         return 'text-blue-600';
-      case 'Early Unlock Penalty':
+      case 'penalty':
         return 'text-orange-600';
       default:
         return 'text-gray-600';
@@ -43,7 +34,7 @@ const TransactionHistory = ({ transactions }: TransactionHistoryProps) => {
   };
 
   const getAmountDisplay = (type: string, amount: number) => {
-    const sign = type === 'Deposit' ? '+' : '-';
+    const sign = type === 'deposit' ? '+' : '-';
     return `${sign}₦${amount.toLocaleString()}`;
   };
 
@@ -75,13 +66,13 @@ const TransactionHistory = ({ transactions }: TransactionHistoryProps) => {
                   </div>
                   <div>
                     <div className="font-medium text-gray-900">
-                      {transaction.goalName}
+                      {transaction.description}
                     </div>
                     <div className="text-sm text-gray-600">
                       {transaction.description}
                     </div>
                     <div className="text-xs text-gray-500">
-                      {new Date(transaction.date).toLocaleDateString('en-US', {
+                      {new Date(transaction.createdAt).toLocaleDateString('en-US', {
                         year: 'numeric',
                         month: 'short',
                         day: 'numeric'
@@ -91,7 +82,7 @@ const TransactionHistory = ({ transactions }: TransactionHistoryProps) => {
                 </div>
                 <div className="text-right">
                   <div className={`font-semibold ${getTransactionColor(transaction.type)}`}>
-                    {getAmountDisplay(transaction.type, transaction.amount)}
+                    {getAmountDisplay(transaction.type, Number(transaction.amount))}
                   </div>
                   <div className="text-xs text-gray-500 capitalize">
                     {transaction.type.replace(/([A-Z])/g, ' $1').trim()}

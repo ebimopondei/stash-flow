@@ -3,38 +3,49 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { UserSidebar } from "@/components/layout/UserSidebar";
-import { Target, TrendingUp, DollarSign, Plus } from "lucide-react";
+import { Target, TrendingUp, DollarSign, Calendar } from "lucide-react";
 import { Link } from "react-router-dom";
 import DashboardApi from "@/api/dashboard/dashboard-api";
 import { useEffect, useState } from "react";
 import type { Statistics } from "@/types/dashboard";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import useDeposit from "@/hooks/form-hooks/use-deposit-hook";
+import TransactionsApi from "@/api/transactions/transactions-api";
+import type { TransactionsAttribute } from "@/types/transactions";
+
 
 
 
 const Dashboard = () => {
 
+  const { form, isDepositDialogOpen, onDeposit, setIsDepositDialogOpen, triggerRefresh } = useDeposit();
+
   const { getDashboardStats } = DashboardApi()
+  const { getTransactions } = TransactionsApi()
 
   const [ stats, setStats ] = useState<Statistics| null>(null);
 
-
-  
+  const [ recentTransactions, setRecenTransactions ] = useState<TransactionsAttribute[]>([])
 
   useEffect(()=>{
     async function handleGetDashboardStats() {
       const response = await getDashboardStats();
       setStats(response.data)
     }
+    
+    async function handleGetTransactions() {
+      const response = await getTransactions(1, 3);
+      setRecenTransactions(response.data.transactions)
+    }
 
+    handleGetTransactions();
     handleGetDashboardStats();
 
-  }, []);
-  
-  const recentTransactions = [
-    { id: 1, description: "Monthly deposit - Emergency Fund", amount: 500, date: "2024-01-15", type: "deposit" },
-    { id: 2, description: "Weekly deposit - Vacation", amount: 100, date: "2024-01-12", type: "deposit" },
-    { id: 3, description: "Monthly deposit - Car Fund", amount: 300, date: "2024-01-10", type: "deposit" },
-  ];
+  }, [triggerRefresh]);
+
 
   return (
     <SidebarProvider>
@@ -46,12 +57,93 @@ const Dashboard = () => {
               <SidebarTrigger />
               <h1 className="text-3xl font-bold">Welcome</h1>
             </div>
-            <Link to="/dashboard/goals">
-              <Button>
-                <Plus className="w-4 h-4 mr-2" />
-                New Goal
-              </Button>
-            </Link>
+            
+            <div className="space-x-6">
+              <Dialog open={isDepositDialogOpen} onOpenChange={setIsDepositDialogOpen}>
+              <DialogTrigger >
+                <Button>
+                  <DollarSign className="w-4 h-4 mr-2" />
+                  Deposit
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-md">
+                <DialogHeader>
+                  <DialogTitle>New Deposit</DialogTitle>
+                  <DialogDescription>
+                    Fund your account.
+                  </DialogDescription>
+                </DialogHeader>
+
+                <Form {...form}>
+                  <form className="" onSubmit={form.handleSubmit(onDeposit)}>
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <FormField 
+                          control={form.control}
+                          name="amount"
+                          render={({field}) =>(
+                            <FormItem>
+                              <FormLabel>Amount *</FormLabel>
+                              <FormControl>
+                                <Input type="number" placeholder="1000" {...field} />
+                              </FormControl>
+                              <FormDescription />
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <FormField 
+                          control={form.control}
+                          name="email"
+                          render={({field}) =>(
+                            <FormItem>
+                              <FormLabel>Description</FormLabel>
+                              <FormControl>
+                                <Textarea placeholder="Describe your goal..." {...field} />
+                              </FormControl>
+                              <FormDescription />
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                      </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <FormField 
+                            control={form.control}
+                            name="reference"
+                            render={({field}) =>(
+                              <FormItem>
+                                <FormLabel>Target Amount*</FormLabel>
+                                <FormControl>
+                                  <Input placeholder="10000" {...field}/>
+                                </FormControl>
+                                <FormDescription />
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />  
+                        </div>
+
+                      <Button type="submit" className="w-full">
+                        Create Goal
+                      </Button>
+                    </div>
+                    </div>
+                  </form>
+                </Form>
+              </DialogContent>
+            </Dialog>
+              <Link to="/dashboard/goals">
+                <Button>
+                  <Target className="w-4 h-4 mr-2" />
+                  New Goal
+                </Button>
+              </Link>
+            </div>
           </div>
 
           {/* Stats Grid */}
@@ -70,7 +162,7 @@ const Dashboard = () => {
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">Sub Wallet</CardTitle>
-                  {<DollarSign className="w-4 h-4" />}
+                  {<Calendar className="w-4 h-4" />}
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">${stats?.wallets.sub}</div>
@@ -81,7 +173,7 @@ const Dashboard = () => {
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">Total Saved</CardTitle>
-                  {<DollarSign className="w-4 h-4" />}
+                  {<TrendingUp className="w-4 h-4" />}
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">${stats?.totalSaved}</div>
@@ -144,7 +236,7 @@ const Dashboard = () => {
                       <div className="flex-1">
                         <p className="text-sm font-medium">{transaction.description}</p>
                         <p className="text-xs text-muted-foreground">
-                          {new Date(transaction.date).toLocaleDateString()}
+                          {new Date(transaction.createdAt).toLocaleDateString()}
                         </p>
                       </div>
                       <div className="text-right">

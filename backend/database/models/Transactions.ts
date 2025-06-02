@@ -3,12 +3,16 @@
 import { Model, DataTypes } from "sequelize";
 import { sequelize } from "../setup";
 
+type source = 'external' | 'wallet' | 'goal' | 'main' | 'sub'
+
 interface TransactionsAttribute {
     id?: string;
     userId: string;
-    goalsId: string;
+    goalsId?: string;
     amount: string;
     type: string;
+    from: string,
+    to: string,
     description: string;
 
     
@@ -22,6 +26,8 @@ class Transactions extends Model<TransactionsAttribute> implements TransactionsA
     public userId!: string;
     public goalsId!: string;
     public amount!: string;
+    public from!: string;
+    public to!: string;
     public description!: string;
     public type!: string;
 
@@ -32,10 +38,10 @@ class Transactions extends Model<TransactionsAttribute> implements TransactionsA
 
 Transactions.init({
   id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: DataTypes.INTEGER
+        type: DataTypes.UUID,
+            defaultValue: DataTypes.UUIDV4,
+            primaryKey: true,
+            allowNull: false,
       },
 
       goalsId: {
@@ -62,6 +68,16 @@ Transactions.init({
 
       type: {
         type: DataTypes.ENUM('deposit', 'deposit_goal', 'fund_goal', 'withdrawal', 'disbursement'),
+        allowNull: false,
+      },
+
+      from: {
+        type: DataTypes.ENUM('goal', 'wallet', 'main', 'sub', 'external'),
+        allowNull: false
+      },
+
+      to: {
+        type: DataTypes.ENUM('goal', 'wallet', 'main', 'sub', 'external'),
         allowNull: false,
       },
       

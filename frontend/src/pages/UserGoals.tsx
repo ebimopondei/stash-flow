@@ -9,9 +9,9 @@ import {  Dialog,DialogContent,DialogDescription, DialogHeader, DialogTitle, Dia
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { Plus, Target, Calendar, DollarSign, Edit2, Trash2 } from "lucide-react";
-import { toast } from 'sonner'
-import useCreateGoal from "@/hooks/form-hooks/use-create-goal-hook";
+import { Plus, Target, Calendar, DollarSign, Edit2 } from "lucide-react";
+import { toast } from 'react-hot-toast'
+import useGoal from "@/hooks/form-hooks/use-goal-hook";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import GoalsApi from "@/api/goals/goals-api";
 import { type CreateGoalFormData } from '@shared/validation/signup-schema'
@@ -19,7 +19,7 @@ import { type CreateGoalFormData } from '@shared/validation/signup-schema'
 
 const UserGoals = () => {
 
-  const { form, onCreateGoal, isDialogOpen, setIsDialogOpen } = useCreateGoal();
+  const { form, onCreateGoal, editForm, onEditGoald, setEditingGoal, triggerRefresh, isEditDialogOpen, setIsEditDialogOpen, isDialogOpen, setIsDialogOpen } = useGoal();
 
   const { getGoals } = GoalsApi()
 
@@ -30,15 +30,11 @@ const UserGoals = () => {
     async function handleGetGoals(){
       const response = await getGoals();
       setGoals(response.data)
-      console.log(response.data)
     } 
 
     handleGetGoals();
 
-  }, [])
-
-
-
+  }, [triggerRefresh])
 
   const handleDeposit = (goalId: string, amount: number) => {
     setGoals(goals.map(goal => 
@@ -46,11 +42,14 @@ const UserGoals = () => {
         ? { ...goal, savedAmount: String(Number(goal.savedAmount) + amount) }
         : goal
     ));
-    toast("Deposit Successful",
-      {
-      description: `$${amount} has been added to your goal.`,
-    });
+    toast.success(`$${amount} has been added to your goal.`)
   };
+
+  const handleEdit = (goal:CreateGoalFormData) => {
+    setEditingGoal(goal)
+    console.log(goal)
+    setIsEditDialogOpen(true)
+  }
 
   return (
     <SidebarProvider>
@@ -62,6 +61,7 @@ const UserGoals = () => {
               <SidebarTrigger />
               <h1 className="text-3xl font-bold">My Goals</h1>
             </div>
+            
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
               <DialogTrigger >
                 <Button>
@@ -284,13 +284,171 @@ const UserGoals = () => {
                           <DollarSign className="w-4 h-4 mr-2" />
                           Quick Deposit ($100)
                         </Button>
-                        <Button size="sm" variant="outline">
-                          <Edit2 className="w-4 h-4 mr-2" />
-                          Edit
-                        </Button>
-                        <Button size="sm" variant="outline">
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
+                        <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+                          <DialogTrigger >
+                            <Button onClick={()=>{handleEdit(goal)}} size="sm" variant="outline">
+                              <Edit2 className="w-4 h-4 mr-2" />
+                              Edit
+                            </Button>
+                          </DialogTrigger>
+
+                          {isEditDialogOpen && <DialogContent className="sm:max-w-md">
+                            <DialogHeader>
+                              <DialogTitle>Edit Savings Goal</DialogTitle>
+                              <DialogDescription>
+                                Edit/Modify your saving goals.
+                              </DialogDescription>
+                            </DialogHeader>
+
+                            <Form {...editForm}>
+                              <form className="" onSubmit={editForm.handleSubmit(onEditGoald)}>
+                                <div className="space-y-4">
+                                  <div className="space-y-2">
+                                    <FormField 
+                                      control={editForm.control}
+                                      name="id"
+                                      render={({field}) =>(
+                                        <FormItem>
+                                          <FormControl>
+                                            <Input type="hidden" {...field} />
+                                          </FormControl>
+                                          <FormDescription />
+                                          <FormMessage />
+                                        </FormItem>
+                                      )}
+                                    />
+                                  </div>
+                                  <div className="space-y-2">
+                                    <FormField 
+                                      control={editForm.control}
+                                      name="title"
+                                      render={({field}) =>(
+                                        <FormItem>
+                                          <FormLabel>Goal Title *</FormLabel>
+                                          <FormControl>
+                                            <Input placeholder="e.g., Emergency Fund" {...field} />
+                                          </FormControl>
+                                          <FormDescription />
+                                          <FormMessage />
+                                        </FormItem>
+                                      )}
+                                    />
+                                  </div>
+                                  <div className="space-y-2">
+                                    <FormField 
+                                      control={editForm.control}
+                                      name="description"
+                                      render={({field}) =>(
+                                        <FormItem>
+                                          <FormLabel>Description</FormLabel>
+                                          <FormControl>
+                                            <Textarea placeholder="Describe your goal..." {...field} />
+                                          </FormControl>
+                                          <FormDescription />
+                                          <FormMessage />
+                                        </FormItem>
+                                      )}
+                                    />
+
+                                  </div>
+                                  <div className="grid grid-cols-2 gap-4">
+                                    <div className="space-y-2">
+                                      <FormField 
+                                        control={editForm.control}
+                                        name="targetAmount"
+                                        render={({field}) =>(
+                                          <FormItem>
+                                            <FormLabel>Target Amount*</FormLabel>
+                                            <FormControl>
+                                              <Input placeholder="10000" {...field}/>
+                                            </FormControl>
+                                            <FormDescription />
+                                            <FormMessage />
+                                          </FormItem>
+                                        )}
+                                      />  
+                                    </div>
+
+                                    <div className="space-y-2">
+                                      <FormField 
+                                        control={editForm.control}
+                                        name="deadline"
+                                        render={({field}) =>(
+                                          <FormItem>
+                                            <FormLabel>Deadline *</FormLabel>
+                                            <FormControl>
+                                              <Input type="date"  {...field} />
+                                            </FormControl>
+                                            <FormDescription />
+                                            <FormMessage />
+                                          </FormItem>
+                                        )}
+                                      />
+                                    </div>
+                                  </div>
+                                  <div className="grid grid-cols-2 gap-4">
+                                    <div className="space-y-2">
+                                      <FormField 
+                                        control={editForm.control}
+                                        name="category"
+                                        render={({field}) =>(
+                                          <FormItem>
+                                            <FormLabel>Category *</FormLabel>
+                                            <FormControl>
+                                              <Select onValueChange={field.onChange} value={field.value} >
+                                                <SelectTrigger>
+                                                  <SelectValue placeholder="Select category" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                  <SelectItem value="Emergency">Emergency</SelectItem>
+                                                  <SelectItem value="Travel">Travel</SelectItem>
+                                                  <SelectItem value="Transportation">Transportation</SelectItem>
+                                                  <SelectItem value="Education">Education</SelectItem>
+                                                  <SelectItem value="Health">Health</SelectItem>
+                                                  <SelectItem value="Other">Other</SelectItem>
+                                                </SelectContent>
+                                              </Select>
+                                            </FormControl>
+                                            <FormDescription />
+                                            <FormMessage />
+                                          </FormItem>
+                                        )}
+                                      />
+                                    </div>
+                                    <div className="space-y-2">
+                                      <FormField 
+                                        control={editForm.control}
+                                        name="frequency"
+                                        render={({field}) =>(
+                                          <FormItem>
+                                            <FormLabel>Select Frequency *</FormLabel>
+                                            <FormControl>
+                                              <Select onValueChange={field.onChange} value={field.value}>
+                                                <SelectTrigger>
+                                                  <SelectValue placeholder="Select frequency" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                  <SelectItem value="Weekly">Weekly</SelectItem>
+                                                  <SelectItem value="Monthly">Monthly</SelectItem>
+                                                  <SelectItem value="Quarterly">Quarterly</SelectItem>
+                                                </SelectContent>
+                                              </Select>
+                                            </FormControl>
+                                            <FormDescription />
+                                            <FormMessage />
+                                          </FormItem>
+                                        )}
+                                      />
+                                    </div>
+                                  </div>
+                                  <Button type="submit" className="w-full">
+                                    Save
+                                  </Button>
+                                </div>
+                              </form>
+                            </Form>
+                          </DialogContent>}
+                        </Dialog>
                       </div>
                     </div>
                   </CardContent>

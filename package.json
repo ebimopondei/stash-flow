@@ -24,6 +24,7 @@
   ],
   "dependencies": {
     "@types/node": "^22.15.23",
+    "axios": "^1.9.0",
     "typescript": "^5.8.3",
     "zod": "^3.25.36"
   },

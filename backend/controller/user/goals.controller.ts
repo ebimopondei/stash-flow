@@ -25,6 +25,28 @@ const getActiveGoalsController = async ( req: Request, res: Response ) => {
     
 }
 
+const updateGoalsController = async ( req: Request, res: Response ) => {
+
+    const validated = createGoalSchema.parse(req.body);
+
+    const goal = await SavingsGoal.update( {
+        title: validated.title,
+        description: validated.description,
+        category: validated.category,
+        deadline: new Date(validated.deadline),
+        targetAmount: validated.targetAmount
+    }, 
+    { 
+        where: {
+            id: validated.id
+        }
+    }
+)
+    
+    res.json({success: true, data: validated, message: "Saving Goal Updated!"});
+
+}
+
 const createGoalsController = async ( req: Request, res: Response ) => {
 
     // @ts-expect-error
@@ -51,5 +73,6 @@ const createGoalsController = async ( req: Request, res: Response ) => {
 export { 
     getGoalsController,
     getActiveGoalsController,
-    createGoalsController
+    createGoalsController,
+    updateGoalsController
 }

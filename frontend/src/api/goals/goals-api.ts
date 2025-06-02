@@ -25,12 +25,27 @@ export default function GoalsApi (){
 
         }catch(err:any){
             if (err.response) {
-                return { success: false, message: err.response.data.message, data: { token: "", refreshToken: "", roles: [''] } };
+                return { success: false, message: err.response.data.message, data: null };
             } else {
-                return {success: false, message: err.message, data: {token: "", refreshToken: "", roles: ['']}}
+                return {success: false, message: err.message, data: null }
             }
         }
     }
+
+    const updateGoals= async ({ id, category, deadline, description, frequency, targetAmount, title}: Partial<CreateGoalFormData>) =>{
+            try {
+                const res = await apiPrivate.patch(`/user/goals`, { id, category, deadline, description, frequency, targetAmount, title } );
+                return res.data;
+
+            }catch(err:any){
+                console.log(err)
+                if (err.response) {
+                    return { success: false, message: err.response.data.message, data: null };
+                } else {
+                    return {success: false, message: err.message, data: null }
+                }
+            }
+        }
 
     const createGoals= async ({ category, deadline, description, frequency, targetAmount, title}: Partial<CreateGoalFormData>) =>{
             try {
@@ -47,7 +62,7 @@ export default function GoalsApi (){
             }
         }
     
-    return  { getGoals, getActiveGoals, createGoals }
+    return  { getGoals, getActiveGoals, createGoals, updateGoals }
 
 }
 

@@ -6,13 +6,13 @@ import type { LoginSchema } from '@shared/validation/signup-schema'
 import useAuth from "../auth-provider";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-
-
+import { useState } from "react";
 
 export default function useLogin() {
 
         const { login } = APICalls();
-        const { loginAuth } = useAuth()
+        const { loginAuth } = useAuth();
+        const [ isLoading, setIsLoading ] = useState<boolean>(false)
 
         const navigate = useNavigate();
     
@@ -26,6 +26,7 @@ export default function useLogin() {
     })
 
     async function onLogin(value:LoginSchema){
+        setIsLoading(true)
         const response = await login(value)
         if(response.success){
             toast.success(response.message)
@@ -36,8 +37,8 @@ export default function useLogin() {
             toast.error(response.message)
         }
 
-
+        setIsLoading(false)
     }
 
-    return { form, onLogin }
+    return { form, onLogin, isLoading }
 }

@@ -53,18 +53,14 @@ const menuItems = [
 export function UserSidebar() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { logoutAuth } = useAuth()
-  const userEmail = localStorage.getItem("userEmail") || "user@example.com";
+  const { logoutAuth, user } = useAuth()
+  const userEmail = user?.email || "user@example.com";
   const userInitials = userEmail.split("@")[0].slice(0, 2).toUpperCase();
 
   const handleLogout = () => {
     logoutAuth();
     toast.success('Logging out ')
-    setTimeout(()=>{
-
-      navigate('/login')
-
-    }, 3000)
+    navigate('/login')
   };
 
   return (

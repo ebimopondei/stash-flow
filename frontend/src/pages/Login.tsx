@@ -9,7 +9,7 @@ import useLogin from "@/hooks/form-hooks/use-login-hook";
 
 const Login = () => {
 
-  const { form, onLogin } = useLogin()
+  const { form, onLogin, isLoading } = useLogin()
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex items-center justify-center p-4">
@@ -66,7 +66,7 @@ const Login = () => {
                     />
                   </div>
 
-                <Button className="w-full" type="submit">Sign In</Button>
+                <Button className="w-full" type="submit"> {isLoading ? <div className="spinner"></div> : "Sign In"} </Button>
 
               </form>
             </Form>

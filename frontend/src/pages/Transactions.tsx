@@ -1,39 +1,31 @@
+import TransactionsApi from '@/api/transactions/transactions-api';
 import { UserSidebar } from '@/components/layout/UserSidebar';
 import TransactionHistory from '@/components/TransactionHistory';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+import useDeposit from '@/hooks/form-hooks/use-deposit-hook';
+import type { TransactionsAttribute } from '@/types/transactions';
+import { useEffect, useState } from 'react';
 
-// Mock data (same as in Index.tsx)
-const mockTransactions = [
-  {
-    id: '1',
-    goalId: '1',
-    goalName: 'July Rent Payment',
-    type: 'Deposit' as const,
-    amount: 25000,
-    description: 'Weekly contribution',
-    date: '2025-05-25'
-  },
-  {
-    id: '2',
-    goalId: '2',
-    type: 'Deposit' as const,
-    goalName: 'Emergency Fund',
-    amount: 50000,
-    description: 'Monthly contribution',
-    date: '2025-05-20'
-  },
-  {
-    id: '3',
-    goalId: '3',
-    type: 'Disbursement' as const,
-    goalName: 'Laptop Purchase',
-    amount: 800000,
-    description: 'Goal completed - funds disbursed',
-    date: '2025-05-15'
-  }
-];
+
 
 const Transactions = () => {
+
+  
+    const { triggerRefresh } = useDeposit();
+  
+    const { getTransactions } = TransactionsApi()
+  const [ recentTransactions, setRecenTransactions ] = useState<TransactionsAttribute[]>([])
+
+  useEffect(()=>{
+    
+    async function handleGetTransactions() {
+      const response = await getTransactions(1, 3);
+      setRecenTransactions(response.data.transactions)
+    }
+
+    handleGetTransactions();
+
+  }, [triggerRefresh]);
   return (
 <SidebarProvider>
         <div className="min-h-screen flex w-full">
@@ -48,7 +40,7 @@ const Transactions = () => {
                     </div>
                 </div>
 
-                <TransactionHistory transactions={mockTransactions} />
+                <TransactionHistory transactions={recentTransactions} />
                 </div>
             </main>
     </div>

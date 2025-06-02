@@ -1,8 +1,3 @@
-export interface JwtPayload {
-    roles?: string[];
-    [key: string]: any;
-}
-
 export type payStackSuccessResponse = {
     "redirecturl": string,
     "trans": string,
