@@ -1,6 +1,5 @@
 import { z } from "zod";
 
-
 export const signupSchema = z.object({
   firstname: z.string(),
   lastname: z.string(),
@@ -13,39 +12,3 @@ export const signupSchema = z.object({
 });
 
 export type SignUpFormData = z.infer<typeof signupSchema>;
-
-
-export const createGoalSchema = z.object({
-  id: z.string().optional(),
-  title: z.string().min(3, 'Title too short!'),
-  description: z.string(),
-  targetAmount: z.string(),
-  savedAmount: z.string().optional(),
-  deadline: z.string(),
-  category: z.string(),
-  frequency: z.string(),
-  isLocked: z.boolean().optional(),
-  status: z.enum(['active', 'completed', 'cancelled']).optional(),
-
-})
-
-export type CreateGoalFormData = z.infer<typeof createGoalSchema>;
-
-
-export const loginSchema = z.object( {
-    email: z.string().email('Invalid email format'),
-    password: z.string().min(6, 'Password must be atleast 6 characters')
-})
-
-export type LoginSchema = z.infer<typeof loginSchema>
-
-export const depositSechema = z.object( {
-    amount: z.string(),
-    email: z.string().email('Invalid email format').optional(),
-    reference: z.string().optional(),
-    publicKey: z.string().optional(),
-    userId: z.string().optional()
-
-})
-
-export type DepositSchema = z.infer<typeof depositSechema>

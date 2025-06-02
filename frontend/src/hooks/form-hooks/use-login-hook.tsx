@@ -1,8 +1,8 @@
 import APICalls from "@/api/api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { loginSchema } from '@shared/validation/signup-schema'
-import type { LoginSchema } from '@shared/validation/signup-schema'
+import { loginSchema } from '@shared/validation/login-schema'
+import type { LoginSchema } from '@shared/validation/login-schema'
 import useAuth from "../auth-provider";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";

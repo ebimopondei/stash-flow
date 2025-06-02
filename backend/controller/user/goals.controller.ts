@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 
-import { createGoalSchema } from '../../../shared/validation/signup-schema'
+import { createGoalSchema } from '../../../shared/validation/goals-schema'
 
 import SavingsGoal from "../../database/models/Savingsgoal";
 

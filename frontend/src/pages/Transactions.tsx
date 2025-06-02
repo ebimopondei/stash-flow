@@ -19,7 +19,7 @@ const Transactions = () => {
   useEffect(()=>{
     
     async function handleGetTransactions() {
-      const response = await getTransactions(1, 3);
+      const response = await getTransactions();
       setRecenTransactions(response.data.transactions)
     }
 

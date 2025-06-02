@@ -1,4 +1,4 @@
-import type { DepositSchema } from "@shared/validation/signup-schema";
+import type { DepositSchema } from "@shared/validation/deposit-schema";
 import API from "../api-config";
 import type { payStackSuccessResponse } from "@/types/paystack";
 

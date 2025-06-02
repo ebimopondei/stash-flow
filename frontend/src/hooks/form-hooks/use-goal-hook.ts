@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
-import { createGoalSchema, type CreateGoalFormData } from '@shared/validation/signup-schema'
+import { createGoalSchema, type CreateGoalFormData } from '@shared/validation/goals-schema'
 import { useEffect, useState } from "react";
 import GoalsApi from "@/api/goals/goals-api";
 

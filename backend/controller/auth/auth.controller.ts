@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 
-import { signupSchema, loginSchema } from '../../../shared/validation/signup-schema'
+import { loginSchema } from '../../../shared/validation/login-schema'
+import { signupSchema } from '../../../shared/validation/signup-schema'
 
 import User from "../../database/models/User";
 

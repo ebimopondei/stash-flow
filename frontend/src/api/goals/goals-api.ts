@@ -1,4 +1,4 @@
-import type { CreateGoalFormData } from "@shared/validation/signup-schema";
+import type { CreateGoalFormData } from "@shared/validation/goals-schema";
 import API from "../api-config";
 
 export default function GoalsApi (){

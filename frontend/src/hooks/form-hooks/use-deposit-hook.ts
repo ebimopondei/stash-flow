@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
-import { depositSechema, type DepositSchema } from '@shared/validation/signup-schema'
+import { depositSechema, type DepositSchema } from '@shared/validation/deposit-schema'
 import { useState } from "react";
 import TransactionsApi from "@/api/transactions/transactions-api";
 

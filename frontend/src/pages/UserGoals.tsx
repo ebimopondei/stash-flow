@@ -14,7 +14,7 @@ import { toast } from 'react-hot-toast'
 import useGoal from "@/hooks/form-hooks/use-goal-hook";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import GoalsApi from "@/api/goals/goals-api";
-import { type CreateGoalFormData } from '@shared/validation/signup-schema'
+import { type CreateGoalFormData } from '@shared/validation/goals-schema'
 
 
 const UserGoals = () => {

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import Wallets from "../../database/models/Wallets";
-import { DepositSchema } from "@shared/validation/signup-schema";
+import { DepositSchema } from "@shared/validation/deposit-schema";
 import type { payStackSuccessResponse } from "../../types/misc";
 import Transactions from "../../database/models/Transactions";
 
