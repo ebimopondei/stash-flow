@@ -1,3 +1,5 @@
+import ContactSupport from "@/components/contact-support";
+import Faq from "@/components/faq";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { CheckCircle2, Target, TrendingUp, Shield, ArrowRight } from "lucide-react";
@@ -144,6 +146,13 @@ const Landing = () => {
           </div>
         </div>
       </section>
+
+        <section className="py-20 ">
+          <div className="container mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <Faq />
+            <ContactSupport />
+          </div>
+        </section>
 
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-12">
