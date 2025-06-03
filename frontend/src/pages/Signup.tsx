@@ -8,7 +8,7 @@ import useSignup from "@/hooks/form-hooks/use-signup-hook";
 
 const Signup = () => {
 
-  const { onSignUp, form } = useSignup();
+  const { onSignUp, form, isLoading } = useSignup();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex items-center justify-center p-4">
@@ -130,9 +130,7 @@ const Signup = () => {
 
                 </div>
 
-                <Button className="w-full" type="submit">Create Account</Button>
-
-
+                <Button className="w-full" disabled={isLoading} type="submit">{isLoading ? <div className="spinner"></div> : "Create Account"}</Button>
                 </form>
             </Form>
             

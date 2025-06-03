@@ -6,14 +6,13 @@ import { useNavigate } from "react-router-dom";
 
 import { signupSchema } from '@shared/validation/signup-schema'
 import type { SignUpFormData } from '@shared/validation/signup-schema'
+import { useState } from "react";
 export default function useSignup(){
 
-    const navigate = useNavigate()
-    
-    
     const { signUp } = APICalls();
+    const navigate = useNavigate()
+    const [ isLoading, setIsLoading ] = useState<boolean>(false)
 
-    
 
     const form = useForm<SignUpFormData>({
         resolver: zodResolver(signupSchema),
@@ -28,20 +27,20 @@ export default function useSignup(){
     })
 
     async function onSignUp(value:SignUpFormData) {
+        setIsLoading(true)
 
         const response = await signUp(value)
         if(response.success){
             toast.success(response.message)
-            setTimeout(()=>{
-                navigate('/login');
-            }, 2000
-        );
+            navigate('/login');
         }else {
             toast.error(response.message)
         }
+
+        setIsLoading(false)
     }
 
     
-    return { onSignUp, form }
+    return { onSignUp, form, isLoading }
     
 }

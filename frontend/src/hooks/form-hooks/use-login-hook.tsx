@@ -10,11 +10,11 @@ import { useState } from "react";
 
 export default function useLogin() {
 
-        const { login } = APICalls();
-        const { loginAuth } = useAuth();
-        const [ isLoading, setIsLoading ] = useState<boolean>(false)
+    const { login } = APICalls();
+    const { loginAuth } = useAuth();
+    const [ isLoading, setIsLoading ] = useState<boolean>(false)
 
-        const navigate = useNavigate();
+    const navigate = useNavigate();
     
     
     const form  = useForm<LoginSchema>({ 

@@ -66,14 +66,9 @@ const Login = () => {
                     />
                   </div>
 
-                <Button className="w-full" type="submit"> {isLoading ? <div className="spinner"></div> : "Sign In"} </Button>
-
+                <Button disabled={isLoading} className="w-full" type="submit"> {isLoading ? <div className="spinner"></div> : "Sign In"} </Button>
               </form>
             </Form>
-
-
-            
-            
             
             <div className="mt-6 text-center space-y-2">
               <Link to="/forgot-password" className="text-sm text-primary hover:underline">
