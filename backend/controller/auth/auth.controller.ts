@@ -7,10 +7,11 @@ import User from "../../database/models/User";
 
 import { SECRET as secret, REFRESHSECRET as refreshSecret } from '../../config/secret'
 
-
 import bcrypt from 'bcryptjs'
 import { Op } from "sequelize";
 import Wallets from "../../database/models/Wallets";
+import { eventEmitter } from "../../events";
+import { MailEvent } from "../../helpers/enums";
 
 const jwt = require('jsonwebtoken')
 
@@ -26,6 +27,8 @@ const signupController = async ( req: Request, res: Response ) => {
       email: validated.email,
       password: hashedPassword,
     });
+
+    eventEmitter.emit(MailEvent.userSignup)
 
     res.json({success: true, data: newUser, message: "User Created Successfully!"});
     
@@ -63,6 +66,8 @@ const loginController = async ( req: Request, res: Response ) => {
         res.status(400).json({ success: false, message: 'Invalid Credentials' });
         return 
     }
+
+    eventEmitter.emit(MailEvent.userLogin, 'ebi4jah15@gmail.com', user, req)
             
     const token = jwt.sign(user?.toJSON(), secret, {expiresIn: "1h" });
     const refreshToken = jwt.sign(user?.toJSON(), refreshSecret, { expiresIn: "1d"});

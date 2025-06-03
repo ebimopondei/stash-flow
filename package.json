@@ -29,6 +29,7 @@
     "zod": "^3.25.36"
   },
   "devDependencies": {
+    "@types/nodemailer-express-handlebars": "^4.0.5",
     "backend": "^0.0.0",
     "sequelize-cli": "^6.6.3"
   }

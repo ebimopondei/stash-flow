@@ -7,8 +7,10 @@ import { CustomError } from './types/error'
 import { APPROUTER } from './routes'
 
 import { PORT } from './config/server'
+import userAgent  from 'express-useragent'
 
 const app = express()
+app.use(userAgent.express());
 
 app.use(express.urlencoded( { extended: true, }))
 app.use(express.json())
