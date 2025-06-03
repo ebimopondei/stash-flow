@@ -67,7 +67,7 @@ const loginController = async ( req: Request, res: Response ) => {
         return 
     }
 
-    eventEmitter.emit(MailEvent.userLogin, 'ebi4jah15@gmail.com', user, req)
+    eventEmitter.emit(MailEvent.userLogin, user, req)
             
     const token = jwt.sign(user?.toJSON(), secret, {expiresIn: "1h" });
     const refreshToken = jwt.sign(user?.toJSON(), refreshSecret, { expiresIn: "1d"});
