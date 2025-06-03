@@ -10,6 +10,7 @@ import { PORT } from './config/server'
 import userAgent  from 'express-useragent'
 
 const app = express()
+app.set('trust proxy', 2);
 app.use(userAgent.express());
 
 app.use(express.urlencoded( { extended: true, }))
