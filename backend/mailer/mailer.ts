@@ -109,7 +109,7 @@ const combinedFormattedDateTime = `${time.replace(',', '')} ${day}${month}, ${ye
     
     transporter.use('compile', hbs(handlebarOptions));
     transporter.verify(async function(error:Error) {
-        if (error) console.error("❌ Error connecting to email connection <noreply_mail>");
+        if (error) console.error("❌ Error connecting to email connection <noreply_mail>", error);
         else console.info("<noreply_mail> Email connection successful 🚀");
     });
     
