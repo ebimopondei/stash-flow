@@ -1,8 +1,23 @@
+import { Transporter } from "nodemailer";
 import { HOST, PASSWORD, PORT, SECURE, USER } from "../config/mailer";
+import hbs, { NodemailerExpressHandlebarsOptions } from 'nodemailer-express-handlebars'
 
 const nodemailer = require('nodemailer');
 const Imap = require('imap');
-  
+const path = require('path');
+
+const handlebarOptions:NodemailerExpressHandlebarsOptions = {
+    viewEngine: {
+        extname: ".handlebars",
+        partialsDir: path.resolve('./views'),
+        defaultLayout: false,
+    },
+    viewPath: path.resolve('./views'),
+    extName: ".handlebars",
+}
+
+let transporter: Transporter;
+
 const host = HOST;
 const port = PORT;
 const secure = SECURE;
@@ -20,19 +35,31 @@ const imapConfig = {
     port: 993,
     tls: {
         rejectUnauthorized: true,
-      }
-  };
+    }
+};
 
-const transport = () =>{
-    let transport =  nodemailer.createTransport({
-        host,
-        port,
-        secure,
-        auth,
-        tls: {rejectUnauthorized},
-    })
+const getTransporter = ():Transporter =>{
+
+    if(!transporter){
+        transporter =  nodemailer.createTransport({
+            host,
+            port,
+            secure,
+            auth,
+            tls: {rejectUnauthorized},
+        })
+
+        transporter.use('compile', hbs(handlebarOptions));
+        transporter.verify((error:unknown) =>{
+            if (error) {
+                console.error("❌ Fatal Error: Could not connect to email server.", error);
+            } else {
+                console.info("🚀 Email connection successful!");
+            }
+        });
+    }
     
-    return transport;
+    return transporter;
 }
 
 const imap =  new Imap(imapConfig);
@@ -40,5 +67,5 @@ const imap =  new Imap(imapConfig);
 export { 
     nodemailer,
     imap,
-    transport
+    getTransporter
 }
