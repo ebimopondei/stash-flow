@@ -1,12 +1,12 @@
-import type { DepositSchema } from "@shared/validation/deposit-schema";
 import API from "../api-config";
 import type { payStackSuccessResponse } from "@/types/paystack";
+import type { DepositData } from "@/types/transactions";
 
 export default function TransactionsApi (){
 
     const { apiPrivate } = API();
 
-    const verrifyDeposit= async (response: payStackSuccessResponse, data: Partial<DepositSchema>) =>{
+    const verrifyDeposit= async (response: payStackSuccessResponse, data: Partial<DepositData>) =>{
             try {
                 const res = await apiPrivate.post(`/user/deposit/verify`, { ...response, ...data } );
                 return res.data;
@@ -20,7 +20,7 @@ export default function TransactionsApi (){
                 }
             }
         }
-    const createDeposit= async ({ amount, email, publicKey, reference, userId }: Partial<DepositSchema>) =>{
+    const createDeposit= async ({ amount, email, publicKey, reference, userId }: Partial<DepositData>) =>{
             try {
                 const res = await apiPrivate.post(`/user/deposit`, { amount, email, publicKey, reference, userId } );
                 return res.data;

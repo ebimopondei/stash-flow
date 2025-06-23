@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import Wallets from "../../database/models/Wallets";
-import { DepositSchema } from "@shared/validation/deposit-schema";
 import type { payStackSuccessResponse } from "../../types/misc";
 import Transactions from "../../database/models/Transactions";
+import { DepositSchema } from "../../validation/deposit-schema";
 
 const verifyPaystackDeposit = async ( req: Request, res: Response ) => {
     // @ts-expect-error

@@ -9,6 +9,7 @@ import TransactionsApi from "@/api/transactions/transactions-api";
 import { usePaystackPayment } from 'react-paystack'
 import type { payStackSuccessResponse } from "@/types/paystack";
 import useAuth from "../auth-provider";
+import type { HookConfig } from "react-paystack/dist/types";
 
 export default function useDeposit(){
 
@@ -24,6 +25,7 @@ export default function useDeposit(){
     const form = useForm<DepositSchema>({
         resolver: zodResolver(depositSechema),
         defaultValues: {
+            amount: ''
         }
     })
 
@@ -33,11 +35,18 @@ export default function useDeposit(){
 
 
     async function onDeposit(value:DepositSchema) {
-        const config = {
+        const config: HookConfig = {
             reference: (new Date()).getTime().toString(),
             email: user?.email,
-            custom_fields: {
-                userId: user?.id
+            metadata: {
+
+                custom_fields:  [
+                    {
+                        display_name: 'userId',
+                        variable_name: 'userId',
+                        value: user?.id
+                    }
+                ]
             },
             amount: Number(value.amount) * 100, //Amount is in the country's lowest currency. E.g Kobo, so 20000 kobo = N200
             publicKey: import.meta.env.VITE_PAYSTACKPUBLICKEY,

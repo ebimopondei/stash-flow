@@ -82,11 +82,6 @@ const Login = () => {
               </div>
             </div>
             
-            <div className="mt-4 p-3 bg-blue-50 rounded-lg">
-              <p className="text-sm text-blue-700 font-medium">Demo Credentials:</p>
-              <p className="text-xs text-blue-600">User: user@example.com / password123</p>
-              <p className="text-xs text-blue-600">Admin: admin@saveflow.com / admin123</p>
-            </div>
           </CardContent>
         </Card>
       </div>

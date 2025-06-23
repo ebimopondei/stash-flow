@@ -11,7 +11,6 @@ import type { Statistics } from "@/types/dashboard";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import useDeposit from "@/hooks/form-hooks/use-deposit-hook";
 import TransactionsApi from "@/api/transactions/transactions-api";
 import type { TransactionsAttribute } from "@/types/transactions";
@@ -93,43 +92,10 @@ const Dashboard = () => {
                           )}
                         />
                       </div>
-                      <div className="space-y-2">
-                        <FormField 
-                          control={form.control}
-                          name="email"
-                          render={({field}) =>(
-                            <FormItem>
-                              <FormLabel>Description</FormLabel>
-                              <FormControl>
-                                <Textarea placeholder="Describe your goal..." {...field} />
-                              </FormControl>
-                              <FormDescription />
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-
-                      </div>
                       <div className="grid grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                          <FormField 
-                            control={form.control}
-                            name="reference"
-                            render={({field}) =>(
-                              <FormItem>
-                                <FormLabel>Target Amount*</FormLabel>
-                                <FormControl>
-                                  <Input placeholder="10000" {...field}/>
-                                </FormControl>
-                                <FormDescription />
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />  
-                        </div>
 
                       <Button type="submit" className="w-full">
-                        Create Goal
+                        Create Deposit
                       </Button>
                     </div>
                     </div>
