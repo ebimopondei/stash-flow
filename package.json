@@ -10,7 +10,6 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:backend": "npm run build --workspace backend",
     "build:frontend": "npm run build --workspace frontend",
-
     "watch:backend": "npm run watch --workspace backend",
     "dev:backend": "npm run dev --workspace backend",
     "start:dev:backend": "concurrently \"npm run watch:backend\"  \"npm run dev:backend\"  ",

@@ -54,7 +54,7 @@ const Signup = () => {
                       name="lastname"
                       render={({field}) => (
                         <FormItem>
-                          <FormLabel>First Name</FormLabel>
+                          <FormLabel>Last Name</FormLabel>
                           <FormControl>
                             <Input placeholder="Doe" {...field} />
                           </FormControl>

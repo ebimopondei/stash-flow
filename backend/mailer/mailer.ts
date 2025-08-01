@@ -31,10 +31,10 @@ const login = async(user: User, options: { ip: string, useragent:Details })=>{
 
     const mailTransporter = getTransporter();
 
-        if (!mailTransporter) {
-             console.error("❌ Email transporter not initialized.");
-             return { success: false, message: "Email service unavailable." };
-        }
+    if (!mailTransporter) {
+            console.error("❌ Email transporter not initialized.");
+            return { success: false, message: "Email service unavailable." };
+    }
      
     try{
 

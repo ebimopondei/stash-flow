@@ -65,10 +65,10 @@ app.use((error:CustomError, req:Request, res:Response, next:NextFunction) => {
       return;
     } else if (error instanceof UniqueConstraintError) {
       const uniqueFields = error.errors.map((e) => e.path).join(', ');
-      res.status(409).json({ status: 'fail', statusCode: 503,  message: `The provided value for ${uniqueFields} already exists.` });
+      res.status(409).json({ status: 'fail', statusCode: 409,  message: `The provided value for ${uniqueFields} already exists.` });
       return; 
     } else if (error instanceof ForeignKeyConstraintError) {
-      res.status(409).json({ status: 'fail', statusCode: 503,  message: 'Failed due to a foreign key constraint violation.' });
+      res.status(422).json({ status: 'fail', statusCode: 422,  message: 'Failed due to a foreign key constraint violation.' });
       return; 
     } else if (error instanceof DatabaseError) {
       console.error('Sequelize Database Error:', error.message, error.sql);
